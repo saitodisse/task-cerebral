@@ -17,14 +17,7 @@ class TasksList extends StateComponent {
   render() {
     return (
       <section id="main">
-        <input
-          id="toggle-all"
-          type="checkbox"
-          checked={this.state.isAllChecked}
-          onChange={this.signals.toggleAllChanged}
-        />
-        <label htmlFor="toggle-all">Mark all as complete</label>
-        <ul id="task-list">
+        <ul className="list-group">
           {this.state.tasks.map(this.renderTask.bind(this))}
         </ul>
       </section>

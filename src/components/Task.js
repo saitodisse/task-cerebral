@@ -35,52 +35,21 @@ class Task extends StateComponent {
   }
 
   render() {
-
-    var className = classNames({
-      completed: this.props.task.completed,
-      editing: this.props.task.$isEditing
-    });
-
     return (
-      <li className={className}>
-        <div className="view">
-          {
-            this.props.task.$isSaving ?
-            null :
-            <input
-              className="toggle"
-              type="checkbox"
-              disabled={this.props.task.$isSaving}
-              onChange={this.signals.toggleCompletedChanged.bind(null, {ref: this.props.task.$ref})}
-              checked={this.props.task.completed}/>
-          }
-          <label onDoubleClick={this.edit.bind(this)}>
-            {this.props.task.title} {this.props.task.$isSaving ?
-              <small>(saving)</small> :
-              null
-            }
-          </label>
-          {
-            this.props.task.$isSaving ?
-            null :
-            <button
-              className="destroy"
-              onClick={this.signals.removeTaskClicked.bind(null, {
-                ref: this.props.task.$ref
-              })}/>
-          }
-        </div>
-        <form onSubmit={this.onNewTitleSubmitted.bind(this)}>
-          <input
-            ref="edit"
-            className="edit"
-            value={this.props.task.$newTitle || this.props.task.title}
-            onBlur={this.signals.newTitleSubmitted.bind(null, {
+      <li className='list-group-item'>
+        {
+          this.props.task.$isSaving ?
+          null :
+          <button
+            className="btn btn-default"
+            onClick={this.signals.removeTaskClicked.bind(null, {
               ref: this.props.task.$ref
-            })}
-            onChange={this.onNewTitleChanged.bind(this)}
-          />
-        </form>
+            })}>X</button>
+        }
+        {this.props.task.title} {this.props.task.$isSaving ?
+          <small>(saving)</small> :
+          null
+        }
       </li>
     );
 

@@ -21,15 +21,22 @@ class AddTask extends StateComponent {
 
   render() {
     return (
-      <form id="task-form" onSubmit={this.addTask.bind(this)}>
-        <input
-          id="new-task"
-          autoComplete="off"
-          placeholder="What needs to be done?"
-          disabled={this.state.isSaving}
-          value={this.state.newTaskTitle}
-          onChange={this.setNewTaskTitle.bind(this)}
-        />
+      <form
+        className="form-horizontal"
+        id="task-form"
+        onSubmit={this.addTask.bind(this)}>
+         <div className="form-group">
+            <div className="col-sm-10">
+              <input
+                id="new-task"
+                autoComplete="off"
+                placeholder="new task"
+                disabled={this.state.isSaving}
+                value={this.state.newTaskTitle}
+                onChange={this.setNewTaskTitle.bind(this)}
+              />
+            </div>
+          </div>
       </form>
     );
   }

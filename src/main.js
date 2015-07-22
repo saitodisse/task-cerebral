@@ -1,5 +1,3 @@
-import './styles.css';
-
 import React from 'react';
 import App from './App.js';
 import controller from './controller.js';
