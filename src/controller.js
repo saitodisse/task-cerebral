@@ -23,10 +23,7 @@ const initialState = Store({
   isAllChecked: false,
   editedTask: null,
   showCompleted: true,
-  showNotCompleted: true,
-  remainingCount: 0,
-  completedCount: 0,
-  filter: 'all'
+  showNotCompleted: true
 });
 
 let state = initialState;

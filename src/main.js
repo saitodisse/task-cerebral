@@ -1,7 +1,7 @@
 import React from 'react';
 import App from './App.js';
 import controller from './controller.js';
-import Page from 'page';
+// import Page from 'page';
 
 // Actions
 import addTask from './actions/addTask.js';
@@ -10,10 +10,9 @@ import setNewTaskTitle from './actions/setNewTaskTitle.js';
 import setCounters from './actions/setCounters.js';
 import saveTask from './actions/saveTask.js';
 import updateTask from './actions/updateTask.js';
-import setFilter from './actions/setFilter.js';
 
 // Signals
-controller.signal('routeChanged', setFilter);
+// controller.signal('routeChanged', function() {});
 controller.signal('newTaskTitleChanged', setNewTaskTitle);
 controller.signal('newTaskSubmitted', addTask, setCounters, [saveTask], updateTask);
 controller.signal('removeTaskClicked', removeTask, setCounters);
@@ -35,10 +34,8 @@ const Wrapper = React.createClass({
 React.render(<Wrapper/>, document.querySelector('#app'));
 
 // Router
-Page.base(location.pathname.substr(0, location.pathname.length - 1));
-
-Page('/', controller.signals.routeChanged);
-Page('/active', controller.signals.routeChanged);
-Page('/completed', controller.signals.routeChanged);
-
-Page.start();
+// Page.base(location.pathname.substr(0, location.pathname.length - 1));
+// Page('/', null);
+// Page('/active', controller.signals.routeChanged);
+// Page('/completed', controller.signals.routeChanged);
+// Page.start();
