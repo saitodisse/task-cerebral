@@ -6,31 +6,17 @@ import Page from 'page';
 // Actions
 import addTask from './actions/addTask.js';
 import removeTask from './actions/removeTask.js';
-import toggleTaskCompleted from './actions/toggleTaskCompleted.js';
-import setVisibleTasks from './actions/setVisibleTasks.js';
 import setNewTaskTitle from './actions/setNewTaskTitle.js';
-import setAllChecked from './actions/setAllChecked.js';
 import setCounters from './actions/setCounters.js';
-import toggleAllChecked from './actions/toggleAllChecked.js';
 import saveTask from './actions/saveTask.js';
 import updateTask from './actions/updateTask.js';
 import setFilter from './actions/setFilter.js';
-import clearCompleted from './actions/clearCompleted.js';
-import editTask from './actions/editTask.js';
-import setTaskNewTitle from './actions/setTaskNewTitle.js';
-import stopEditingTask from './actions/stopEditingTask.js';
 
 // Signals
+controller.signal('routeChanged', setFilter);
 controller.signal('newTaskTitleChanged', setNewTaskTitle);
-controller.signal('newTaskSubmitted', addTask, setVisibleTasks, setAllChecked, setCounters, [saveTask], updateTask);
-controller.signal('removeTaskClicked', removeTask, setVisibleTasks, setAllChecked, setCounters);
-controller.signal('toggleCompletedChanged', toggleTaskCompleted, setVisibleTasks, setAllChecked, setCounters);
-controller.signal('toggleAllChanged', toggleAllChecked, setVisibleTasks, setCounters);
-controller.signal('routeChanged', setFilter, setVisibleTasks);
-controller.signal('clearCompletedClicked', clearCompleted, setVisibleTasks, setAllChecked, setCounters);
-controller.signal('taskDoubleClicked', editTask);
-controller.signal('newTitleChanged', setTaskNewTitle);
-controller.signal('newTitleSubmitted', stopEditingTask);
+controller.signal('newTaskSubmitted', addTask, setCounters, [saveTask], updateTask);
+controller.signal('removeTaskClicked', removeTask, setCounters);
 
 // Render wrapper
 const Wrapper = React.createClass({
@@ -40,7 +26,7 @@ const Wrapper = React.createClass({
   getChildContext() {
     return {
       controller: controller
-    }
+    };
   },
   render() {
     return <App/>;

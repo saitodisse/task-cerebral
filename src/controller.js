@@ -2,22 +2,22 @@ import Store from 'immutable-store';
 import {Controller, Value} from 'cerebral';
 import events from './events.js';
 
-const initialState =  Store({
+const initialState = Store({
   nextRef: 0,
   tasks: {},
-  visibleTasks: function() {
-    return {
-      value: [],
-      deps: {
-        tasks: ['tasks']
-      },
-      get: function(refs, deps) {
-        return refs.map(function(ref) {
-          return deps.tasks[ref];
-        });
-      }
-    };
-  },
+  // visibleTasks: function() {
+  //   return {
+  //     value: [],
+  //     deps: {
+  //       tasks: ['tasks']
+  //     },
+  //     get: function(refs, deps) {
+  //       return refs.map(function(ref) {
+  //         return deps.tasks[ref];
+  //       });
+  //     }
+  //   };
+  // },
   newTaskTitle: '',
   isSaving: false,
   isAllChecked: false,
@@ -50,7 +50,6 @@ export default Controller({
     state = Value(path, state).set(key, value);
   },
   onUnset: function (path, key) {
-    console.log(arguments);
     state = Value(path, state).unset(key);
   },
   onPush: function (path, value) {

@@ -7,7 +7,6 @@ import TasksFooter from './components/TasksFooter.js';
 class App extends StateComponent {
   getStatePaths() {
     return {
-      visibleTasks: ['visibleTasks'],
       tasks: ['tasks']
     };
   }
@@ -34,7 +33,7 @@ class App extends StateComponent {
       );
     }
   }
-  record() {
+  record() {
     this.recorder.record(this.context.controller.get([]).export());
   }
   stop() {
@@ -55,15 +54,11 @@ class App extends StateComponent {
             <AddTask/>
           </header>
 
-          {this.state.visibleTasks.length ? <TasksList/> : null}
+          {Object.keys(this.state.tasks).length ? <TasksList/> : null}
           {Object.keys(this.state.tasks).length ? <TasksFooter/> : null}
         </section>
         <footer id="info">
-          <p>Double-click to edit a task</p>
-          <p>Credits:
-            <a href="http://christianalfoni.com">Christian Alfoni</a>,
-          </p>
-          <p>Part of <a href="http://taskmvc.com">TaskMVC</a></p>
+          <p> see <a href="http://christianalfoni.com">Christian Alfoni</a> blog </p>
         </footer>
       </div>
     );

@@ -1,38 +1,39 @@
-    body {
-        font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
-        font-size: 16px;
-        margin: 20px;
-    }
+body {
+    font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
+    font-size: 16px;
+    margin: 20px;
+}
 
-    footer {
-        margin: 10px 0px 0px 0px;
-    }
+footer {
+    margin: 10px 0px 0px 0px;
+}
 
-    .btn {
-        margin: 15px;
-        background-color: #999;
-        border: 1px solid #666;
-        padding: 5px 10px;
-        border-radius: 4px;
-        color: #eaeaea;
-        font-size: 16px;
-        font-weight: bold;
-        cursor: pointer;
-    }
+.btn {
+    margin: 0px 9px 0px 0px;
+}
 
-    .btn-stop {
-        background-color: red;
-    }
+.btn-stop {
+    background-color: red;
+}
 
-    .btn-record {
-        background-color: orange;
-    }
+.btn-record {
+    background-color: orange;
+}
 
-    .btn-play {
-        background-color: green;
-    }
+.btn-play {
+    background-color: green;
+}
 
-    .btn-play[disabled] {
-        opacity: 0.5;
-    }
+.btn-play[disabled] {
+    opacity: 0.5;
+}
 
+input#new-task {
+    padding: 3px 0 3px 6px;
+    width: 100%;
+    border: 1px solid #D1CFCF;
+}
+
+li.list-group-item {
+    padding: 10px;
+}
