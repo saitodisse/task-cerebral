@@ -1,11 +1,21 @@
 var Webpack = require('webpack');
 var path = require('path');
-var isProduction = process.env.NODE_ENV === 'production';
+// var isProduction = process.env.NODE_ENV === 'production';
 var node_modules = path.resolve(__dirname, 'node_modules');
+
+var webpack_dev_server_client_url;
+var WEBPACK_HOST = process.env.HOST_NAME || '0.0.0.0';
+var WEBPACK_PORT = parseInt(process.env.PORT) || 8080;
+
+if (WEBPACK_HOST === '0.0.0.0') {
+  webpack_dev_server_client_url = 'webpack-dev-server/client?http://' + WEBPACK_HOST + ':' + WEBPACK_PORT;
+} else {
+  webpack_dev_server_client_url = 'webpack-dev-server/client?http://' + WEBPACK_HOST;
+}
 
 var config = {
   entry: [
-    'webpack-dev-server/client?http://localhost:8080',
+    webpack_dev_server_client_url,
     'webpack/hot/dev-server',
     path.resolve(__dirname, 'src/main.js')
   ],

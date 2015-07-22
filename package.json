@@ -3,7 +3,7 @@
   "version": "0.0.1",
   "description": "task manager with cerebral controller",
   "scripts": {
-    "start": "webpack-dev-server --progress --colors --content-base src --config webpack.config.js",
+    "start": "webpack-dev-server --progress --colors --host 0.0.0.0 --content-base src --config webpack.config.js",
     "deploy": "webpack --config webpack.production.config.js"
   },
   "author": "saitodisse",
