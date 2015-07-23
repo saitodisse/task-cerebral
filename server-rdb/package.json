@@ -8,6 +8,8 @@
   "author": "saitodisse",
   "license": "MIT",
   "dependencies": {
+    "body-parser": "^1.13.2",
+    "express": "^4.13.1",
     "rethinkdb": "^2.0.2",
     "thinky": "^2.0.10"
   }
