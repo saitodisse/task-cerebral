@@ -1,11 +1,11 @@
 module.exports = {
     rethinkdb: {
         host: 'rethinkdb.dev.azk.io',
-        port: 28015,
+        port: process.env.RRRR || 28015,
         authKey: '',
         db: 'tasks_cerebral'
     },
     express: {
-        port: 3000
+        port: process.env.PORT || 8080
     }
 };

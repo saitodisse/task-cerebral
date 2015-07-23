@@ -6,7 +6,7 @@
 systems({
   'task-cerebral': {
     // Dependent systems
-    depends: ['rethinkdb'],
+    depends: ['server-rdb'],
     image: {'docker': 'azukiapp/node'},
     provision: [
       'npm install'
@@ -33,6 +33,15 @@ systems({
       // in ports/http below, and that it's also the same
       // if you're setting it in a .env file
       PORT: '8080'
+    }
+  },
+  'server-rdb': {
+    extends: 'task-cerebral',
+    depends: ['rethinkdb'],
+    workdir: '/azk/#{manifest.dir}/#{system.name}',
+    mounts: {
+      '/azk/#{manifest.dir}/#{system.name}': sync('./#{system.name}'),
+      '/azk/#{manifest.dir}/#{system.name}/node_modules': persistent('#{system.name}/#{system.name}/node_modules')
     }
   },
   'rethinkdb': {
