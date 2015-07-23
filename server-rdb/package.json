@@ -1,0 +1,14 @@
+{
+  "name": "server-rdb",
+  "version": "0.0.1",
+  "description": "rethinkdb server",
+  "scripts": {
+    "start": "node server"
+  },
+  "author": "saitodisse",
+  "license": "MIT",
+  "dependencies": {
+    "rethinkdb": "^2.0.2",
+    "thinky": "^2.0.10"
+  }
+}
