@@ -1,15 +1,13 @@
 /* globals systems sync persistent */
 /**
  * Documentation: http://docs.azk.io/Azkfile.js
+ * More images:  http://images.azk.io
  */
-// Adds the systems that shape your system
 systems({
   'task-cerebral': {
     // Dependent systems
-    depends: [],
-    // More images:  http://images.azk.io
+    depends: ['rethinkdb'],
     image: {'docker': 'azukiapp/node'},
-    // Steps to execute before running instances
     provision: [
       'npm install'
     ],
@@ -26,16 +24,33 @@ systems({
       domains: [ '#{system.name}.#{azk.default_domain}' ]
     },
     ports: {
-      // exports global variables
       http: '8080/tcp'
     },
     envs: {
+      NODE_ENV: 'dev',
+      HOST_NAME: '#{system.name}.#{azk.default_domain}',
       // Make sure that the PORT value is the same as the one
       // in ports/http below, and that it's also the same
       // if you're setting it in a .env file
-      NODE_ENV: 'dev',
-      HOST_NAME: '#{system.name}.#{azk.default_domain}',
       PORT: '8080'
+    }
+  },
+  'rethinkdb': {
+    // https://registry.hub.docker.com/u/library/rethinkdb/
+    image: {'docker': 'rethinkdb'},
+    scalable: {'default': 1},
+    mounts: {
+      // run azk info to check where /data is on host
+      // $ azk info
+      '/data': persistent('#{system.name}/data')
+    },
+    http: {
+      domains: [ '#{system.name}.#{azk.default_domain}' ]
+    },
+    ports: {
+      http: '8080/tcp',
+      rdb_28015: '28015:28015/tcp',
+      rdb_29015: '29015:29015/tcp'
     }
   }
 });
