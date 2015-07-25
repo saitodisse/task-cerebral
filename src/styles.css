@@ -45,3 +45,14 @@ span#task-count {
     padding-right: 7px;
     color: #3D6588;
 }
+
+button.btn.btn-danger {
+    font-family: 'Vollkorn', serif;   
+    font-size: 1.1em;   font-style: italic;   
+    padding: 2px 10px 0px 7px;
+    float: right;
+    color: #fff;   
+    background-color: #B2605E;   
+    border-color: #A06160;
+    margin: 0 -3px 0 0;
+}

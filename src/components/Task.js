@@ -5,17 +5,14 @@ class Task extends StateComponent {
   render() {
     return (
       <li className='list-group-item'>
-        {
-          this.props.task.$isSaving ?
-          null :
-          <button
-            className="btn btn-default"
-            onClick={this.signals.removeTaskClicked.bind(null, {
-              ref: this.props.task.$ref
-            })}>X</button>
-        }
+        <button
+          className="btn btn-danger"
+          disabled={this.props.task.$isSaving}
+          onClick={this.signals.removeTaskClicked.bind(null, {
+            ref: this.props.task.$ref
+          })}>del</button>
         {this.props.task.title} {this.props.task.$isSaving ?
-          <small>(saving)</small> :
+          <small> (saving)</small> :
           null
         }
       </li>

@@ -19,11 +19,7 @@ const initialState = Store({
   //   };
   // },
   newTaskTitle: '',
-  isSaving: false,
-  isAllChecked: false,
-  editedTask: null,
-  showCompleted: true,
-  showNotCompleted: true
+  isSaving: false
 });
 
 let state = initialState;

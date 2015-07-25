@@ -32,6 +32,7 @@ class AddTask extends StateComponent {
          <div className="form-group">
             <div className="col-sm-10">
               <input
+                className="form-control"
                 id="new-task"
                 autoComplete="off"
                 placeholder="new task"
