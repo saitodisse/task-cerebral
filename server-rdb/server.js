@@ -4,11 +4,15 @@ var express = require('express');
 var bodyParser = require('body-parser');
 var app = express();
 
+// save envs to etcd
+var saveEtcd = require('./save-etcd');
+saveEtcd('RETHINKDB_HTTP_HOST', process.env.RETHINKDB_HTTP_HOST);
+saveEtcd('NODE_ENV', process.env.NODE_ENV);
+
 // Load config for RethinkDB and express
 var config = require(path.join(__dirname, '/config.js'));
 
 // Import rethinkdbdash
-//var thinky = require('thinky')(config.rethinkdb);
 var thinky = require('thinky')(config.rethinkdb);
 var r = thinky.r;
 var type = thinky.type;
