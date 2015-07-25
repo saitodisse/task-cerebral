@@ -1,39 +1,47 @@
-body {
-    font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
-    font-size: 16px;
-    margin: 20px;
+body: {
+    font-family: 'Vollkorn', serif;
 }
 
-footer {
-    margin: 10px 0px 0px 0px;
+button.btn {
+    font-family: 'Vollkorn', serif;
+    font-size: 1.2em;
+    font-style: italic;
+    padding: 7px 22px;
 }
 
-.btn {
-    margin: 0px 9px 0px 0px;
+button.btn {
+    margin: 0 15px 0 0;
 }
 
-.btn-stop {
-    background-color: red;
+.buttonsTop {
+    margin: 32px 0;
 }
 
-.btn-record {
-    background-color: orange;
+
+h1 {
+    font-family: 'Vollkorn', serif;
+    font-size: 2.9em;
 }
 
-.btn-play {
-    background-color: green;
-}
-
-.btn-play[disabled] {
-    opacity: 0.5;
+span {
+    font-family: 'Vollkorn', serif;
+    font-size: 1.3em;
 }
 
 input#new-task {
-    padding: 3px 0 3px 6px;
-    width: 100%;
-    border: 1px solid #D1CFCF;
+    font-family: 'Vollkorn', serif;
+    font-size: 1.2em;
+    padding: 7px 16px;
 }
 
-li.list-group-item {
-    padding: 10px;
+a {
+    font-size: 1.2em;
+    font-family: 'Vollkorn', serif;
+}
+
+span#task-count {
+    font-family: 'Vollkorn', serif;
+    font-size: 1.3em;   float: right;
+    padding-right: 7px;
+    color: #3D6588;
 }

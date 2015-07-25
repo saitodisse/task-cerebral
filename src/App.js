@@ -54,10 +54,10 @@ class App extends StateComponent {
 
 	render() {
 		return (
-			<div id="taskapp-wrapper">
-				<div>
+			<div className="container">
+				<div className="buttonsTop">
 					{this.renderRecordButton()}
-					<button className="btn btn-default" onClick={this.loadFromServer.bind(this)}>Load</button>
+					<button className="btn btn-default" onClick={this.loadFromServer.bind(this)}>Load from DB</button>
 					<a href='http://rethinkdb.dev.azk.io'>http://rethinkdb.dev.azk.io</a>
 				</div>
 				<section id="taskapp">
@@ -69,9 +69,6 @@ class App extends StateComponent {
 					{Object.keys(this.state.tasks).length ? <TasksList/> : null}
 					{Object.keys(this.state.tasks).length ? <TasksFooter/> : null}
 				</section>
-				<footer id="info">
-					<p> see <a href="http://christianalfoni.com">Christian Alfoni</a> blog </p>
-				</footer>
 			</div>
 		);
 	}

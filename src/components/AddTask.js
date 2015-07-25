@@ -10,6 +10,10 @@ class AddTask extends StateComponent {
   }
   addTask(event) {
     event.preventDefault();
+    if(this.state.newTaskTitle.length === 0) {
+      return;
+    }
+
     this.signals.newTaskSubmitted();
   }
 
