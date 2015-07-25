@@ -4,8 +4,7 @@ let addTask = function(args, state) {
   let task = {
     $ref: ref,
     $isSaving: true,
-    title: state.get('newTaskTitle'),
-    completed: false
+    title: state.get('newTaskTitle')
   };
 
   state.set(['tasks', ref], task);
