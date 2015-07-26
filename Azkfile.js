@@ -116,7 +116,7 @@ systems({
     workdir: '/azk/#{manifest.dir}',
     shell: '/bin/bash',
     command: 'npm run deploy && npm start',
-    wait: 10,
+    wait: 30,
     mounts: {
       '/azk/#{manifest.dir}': path('.'),
       // '/azk/#{manifest.dir}/dist': path('./dist'),
