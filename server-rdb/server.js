@@ -22,7 +22,6 @@ var Task = thinky.createModel('tasks', {
 // Ensure that an index createdAt exists
 Task.ensureIndex('createdAt');
 
-
 //CORS middleware
 var allowCrossDomain = function(req, res, next) {
   res.header('Access-Control-Allow-Origin', '*');

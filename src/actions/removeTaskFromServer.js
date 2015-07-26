@@ -1,21 +1,23 @@
 var request = require('superagent');
-var config = require('../config.js');
+var utils_get_rethinkdb_server = require('../utils/get-rethinkdb-server.js');
 
 let removeTaskFromServer = function (args, state, promise) {
 	let task = state.get('tasks', args.ref);
-	request
-		.post(config.rethinkdb_server.host + '/task/delete')
-		.send({
-			id: task.id
-		})
-		.set('Accept', 'application/json')
-		.end(function(err, res){
-			if(err) {
-				console.error(res.text);
-				promise.reject(err);
-			}
-			promise.resolve(res.text);
-		});
+	utils_get_rethinkdb_server().then((rethinkdb_server_url) => {
+		request
+			.post(rethinkdb_server_url + '/task/delete')
+			.send({
+				id: task.id
+			})
+			.set('Accept', 'application/json')
+			.end(function(err, res){
+				if(err) {
+					console.error(res.text);
+					promise.reject(err);
+				}
+				promise.resolve(res.text);
+			});
+	});
 
 };
 

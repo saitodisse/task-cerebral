@@ -22,6 +22,9 @@ var config = {
       test: /\.js$/,
       loader: 'babel?optional=es7.decorators',
       exclude: node_modules
+    }, {
+      test: /\.json$/,
+      loader: 'json'
     }]
   },
   plugins: [

@@ -1,22 +1,24 @@
 var request = require('superagent');
-var config = require('../config.js');
+var utils_get_rethinkdb_server = require('../utils/get-rethinkdb-server.js');
 
 let loadFromServer = function (args, state, promise) {
 
 	let task = state.get('tasks', args.ref);
 
-	request
-		.get(config.rethinkdb_server.host + '/task/get')
-		.set('Accept', 'application/json')
-		.end(function(err, res){
-			if(err) {
-				throw err;
-			}
-			var json_response = JSON.parse(res.text);
-			promise.resolve({
-				tasks: json_response
+	utils_get_rethinkdb_server().then((rethinkdb_server_url) => {
+		request
+			.get(rethinkdb_server_url + '/task/get')
+			.set('Accept', 'application/json')
+			.end(function(err, res){
+				if(err) {
+					throw err;
+				}
+				var json_response = JSON.parse(res.text);
+				promise.resolve({
+					tasks: json_response
+				});
 			});
-		});
+	});
 
 };
 

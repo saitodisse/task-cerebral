@@ -17,9 +17,11 @@ var config = {
 	entry: {
     // split vendor to another file
     vendors: ['react', 'cerebral', 'immutable-store', 'event-emitter'],
-		webpack_dev_server_client_url: webpack_dev_server_client_url,
-		dev_server: 'webpack/hot/dev-server',
-		app: path.resolve(__dirname, 'src/main.js')
+		app: [
+			path.resolve(__dirname, 'src/main.js'),
+			'webpack/hot/dev-server',
+			webpack_dev_server_client_url
+		]
 	},
 	devtool: 'eval-source-map',
 	output: {
@@ -34,15 +36,13 @@ var config = {
 			test: /\.js$/,
 			loader: 'babel?optional=es7.decorators',
 			exclude: node_modules
+		}, {
+			test: /\.json$/,
+			loader: 'json'
 		}]
 	},
 	plugins: [
 		new webpack.HotModuleReplacementPlugin(),
-		new webpack.DefinePlugin({
-			'env': {
-				'SERVER-RDB_URL': process.env['SERVER-RDB_URL']
-			}
-		}),
     // split vendor to another file
     new webpack.optimize.CommonsChunkPlugin('vendors', 'vendors.js'),
 	]

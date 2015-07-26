@@ -2,7 +2,7 @@
 systems({
   'task-cerebral': {
     // Dependent systems
-    depends: ['server-rdb'],
+    depends: ['server-rdb', 'server-save-config'],
     image: {'docker': 'azukiapp/node'},
     provision: [
       'npm install'
@@ -12,8 +12,8 @@ systems({
     command: 'npm run deploy && npm start',
     wait: 20,
     mounts: {
-      '/azk/#{manifest.dir}': sync('.'),
-      '/azk/#{manifest.dir}/dist': sync('./dist'),
+      '/azk/#{manifest.dir}': path('.'),
+      // '/azk/#{manifest.dir}/dist': path('./dist'),
       '/azk/#{manifest.dir}/node_modules': persistent('#{manifest.dir}/node_modules')
     },
     scalable: {'default': 1},
@@ -44,6 +44,9 @@ systems({
     mounts: {
       '/azk/#{manifest.dir}/#{system.name}': sync('./#{system.name}'),
       '/azk/#{manifest.dir}/#{system.name}/node_modules': persistent('#{system.name}/#{system.name}/node_modules')
+    },
+    export_envs: {
+      APP_URL: "#{azk.default_domain}:#{net.port.http}"
     }
   },
   'rethinkdb': {
@@ -82,15 +85,15 @@ systems({
       APP_URL: "#{azk.default_domain}:#{net.port.http}"
     }
   },
-  'ngrok': {
+  'ngrok-caddy': {
     // Dependent systems
-    depends: ['caddy'],
+    depends: ['caddy', 'ngrok-server-rdb'],
     image: {docker: 'azukiapp/ngrok'},
 
     // Mounts folders to assigned paths
     mounts: {
       // equivalent persistent_folders
-      '/ngrok/log': path('./log')
+      '/ngrok/log': path('/tmp')
     },
     scalable: { default: 1, limit: 1 },
 
@@ -102,7 +105,43 @@ systems({
     },
     envs: {
       NGROK_CONFIG: '/ngrok/ngrok.yml',
-      NGROK_LOG: '/ngrok/log/ngrok.log'
+      NGROK_LOG: '/ngrok/log/#{system.name}_ngrok.log'
+    }
+  },
+  'ngrok-server-rdb': {
+    depends: ['server-rdb'],
+    // Dependent systems
+    image: {docker: 'azukiapp/ngrok'},
+
+    // Mounts folders to assigned paths
+    mounts: {
+      // equivalent persistent_folders
+      '/ngrok/log': path('/tmp')
+    },
+    scalable: { default: 1, limit: 1 },
+
+    http: {
+      domains: ['#{system.name}.#{azk.default_domain}']
+    },
+    ports: {
+      http: '4040/tcp'
+    },
+    envs: {
+      NGROK_CONFIG: '/ngrok/ngrok.yml',
+      NGROK_LOG: '/ngrok/log/#{system.name}_ngrok.log'
+    }
+  },
+  'server-save-config': {
+    extends: 'server-rdb',
+    depends: ['ngrok-server-rdb'],
+    workdir: '/azk/#{manifest.dir}/#{system.name}',
+    command: 'npm start',
+    ports: {
+      http: '8080/tcp'
+    },
+    mounts: {
+      '/azk/#{manifest.dir}': path('.'),
+      '/azk/#{manifest.dir}/#{system.name}/node_modules': persistent('#{system.name}/#{system.name}/node_modules'),
     }
   },
 });
