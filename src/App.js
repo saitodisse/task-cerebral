@@ -58,7 +58,7 @@ class App extends StateComponent {
 				<div className="buttonsTop">
 					{this.renderRecordButton()}
 					<button className="btn btn-default" onClick={this.loadFromServer.bind(this)}>Load from DB</button>
-					<a href='http://rethinkdb.dev.azk.io' target='_tab'>http://rethinkdb.dev.azk.io</a>
+					<a href='http://rethink-db.dev.azk.io' target='_tab'>http://rethink-db.dev.azk.io</a>
 				</div>
 				<section id="taskapp">
 					<header id="header">
