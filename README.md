@@ -9,6 +9,8 @@ Simples list example using cerebral controller
 
 ![gliffy diagram](./gliffy diagram.png)
 
+see architecture details on [Azkfile.js](https://github.com/saitodisse/task-cerebral/blob/master/Azkfile.js)
+
 ----------------------
 
 > based on christian alfoni's [cerebral todomvc demo](https://github.com/christianalfoni/cerebral/tree/master/demo)
