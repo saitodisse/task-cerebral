@@ -9,15 +9,34 @@
 systems({
 
   /////////////////////////////////////////////////
-  /// Rethink DB
+  /// rethink-db
+  /// ----------
+  /// RethinkDB is the open-source, scalable database that
+  /// makes building realtime apps dramatically easier.
+  ///
+  /// RethinkDB provides a web interface which lets you manage your entire server
+  /// cluster, from controlling sharding and replication to running ReQL queries (in
+  /// JavaScript), with editing and history support. In addition, you can perform
+  /// administration tasks using scriptable ReQL commands.
+  ///
+  /// http://rethinkdb.com/
   /////////////////////////////////////////////////
   'rethink-db': {
     // https://registry.hub.docker.com/u/library/rethink-db/
     image: {'docker': 'rethinkdb'},
     scalable: {'default': 1},
     mounts: {
-      // run azk info to check where /data is on host
+
+      // persistent() -> Persists the files that are inside the container on
+      // the path '#{system.name}/data', to an azk persistent data folder in
+      // the user machine. The location the data will be saved will vary
+      // between Mac and Linux
+      //
+      // You can check where `/data` folder is located with this command:
+      // ```
       // $ azk info
+      // ```
+      // http://docs.azk.io/en/reference/azkfilejs/mounts.html#persistent
       '/data': persistent('#{system.name}/data')
     },
     wait: 10,
@@ -32,7 +51,12 @@ systems({
   },
 
   /////////////////////////////////////////////////
-  /// express + thinky lib - REST
+  /// server-rdb: thinky + express
+  /// ----------------
+  /// A light Node.js ORM for RethinkDB
+  ///
+  /// https://github.com/neumino/thinky
+  /// https://thinky.io/
   /////////////////////////////////////////////////
   'server-rdb': {
     extends: 'task-cerebral',
@@ -44,6 +68,14 @@ systems({
       http: '8080/tcp'
     },
     mounts: {
+      // Syncs the files in './#{system.name}' with a remote destination,
+      // which is mounted in the '/azk/#{manifest.dir}/#{system.name}'.
+      // Differently from `path()` option, `sync` uses rsync instead of VirtualBox
+      // shared folders. As result, the overall performance is significantly
+      // increased, mainly for applications which demand a great number of
+      // files (e.g. a Ruby on Rails application with a lot of assets).
+      //
+      // > http://docs.azk.io/en/reference/azkfilejs/mounts.html#sync
       '/azk/#{manifest.dir}/#{system.name}': sync('./#{system.name}'),
       '/azk/#{manifest.dir}/#{system.name}/node_modules': persistent('#{system.name}/#{system.name}/node_modules')
     },
@@ -53,7 +85,13 @@ systems({
   },
 
   /////////////////////////////////////////////////
-  /// server-rdb web exposer
+  /// ngrok: server-rdb web exposer
+  /// -----------------------------
+  /// Secure tunnels to localhost
+  /// "I want to expose a local server behind a NAT
+  /// or firewall to the internet."
+  ///
+  /// https://ngrok.com/
   /////////////////////////////////////////////////
   'ngrok-server-rdb': {
     depends: ['server-rdb'],
@@ -62,7 +100,11 @@ systems({
 
     // Mounts folders to assigned paths
     mounts: {
-      // equivalent persistent_folders
+      // Mount the folder located in the current system machine '/tmp',
+      // relative to the Azkfile.js, to the path '/ngrok/log' inside the
+      // system container. If any of the files are changed, from the user
+      // machine or from inside the container, the information is also updated
+      // on the other end.
       '/ngrok/log': path('/tmp')
     },
     scalable: { default: 1 },
@@ -81,7 +123,7 @@ systems({
   },
 
   /////////////////////////////////////////////////
-  /// express - config saver
+  /// server-save-config: express - json config saver
   /// ----------------------
   /// saves configuration to a json file
   /// so the task-cerebral can use on browser
@@ -104,7 +146,13 @@ systems({
 
 
   /////////////////////////////////////////////////
-  /// main web app
+  /// task-cerebral: main web app
+  /// ------------
+  /// Simples list example using cerebral controller
+  /// - serves a webpack-dev-server
+  /// - build a production ready version on dist folder
+  ///
+  /// https://github.com/christianalfoni/cerebral
   /////////////////////////////////////////////////
   'task-cerebral': {
     // Dependent systems
@@ -141,7 +189,10 @@ systems({
   },
 
   /////////////////////////////////////////////////
-  /// http2 static server for deploy version
+  /// Caddy: http2 static server for deploy version
+  /// alternative web server that is easy to configure and use.
+  ///
+  /// https://caddyserver.com/
   /////////////////////////////////////////////////
   'caddy': {
     depends: ['task-cerebral'],
@@ -164,7 +215,13 @@ systems({
   },
 
   /////////////////////////////////////////////////
-  /// deploy version web exposer
+  /// ngrok: caddy web exposer
+  /// -----------------------------
+  /// Secure tunnels to localhost
+  /// "I want to expose a local server behind a NAT
+  /// or firewall to the internet."
+  ///
+  /// https://ngrok.com/
   /////////////////////////////////////////////////
   'ngrok-caddy': {
     // Dependent systems
