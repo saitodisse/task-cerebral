@@ -4,45 +4,9 @@ var express = require('express');
 var bodyParser = require('body-parser');
 var request = require('superagent');
 var fsAsync = require('file-async');
+var getTunnel = require('./get-tunnel');
 
 var app = express();
-
-// get ngrok tunnel by local API
-request
-     //FIXME: remove hardcoded values
-.get('http://rethink-express-ngrok.dev.azk.io/api/tunnels')
-.set('Accept', 'application/json')
-.end(function(err, res){
-  if(err) {
-    throw err;
-  }
-
-  var json_response = JSON.parse(res.text);
-  var http_rethinkdb_server_ngrok;
-  if (json_response.tunnels[0].proto === 'http') {
-    http_rethinkdb_server_ngrok = json_response.tunnels[0].public_url;
-  } else {
-    http_rethinkdb_server_ngrok = json_response.tunnels[1].public_url;
-  }
-
-  /**/console.log('\n>>---------\n http_rethinkdb_server_ngrok:\n', http_rethinkdb_server_ngrok, '\n>>---------\n');/*-debug-*/
-
-  var CONFIG_JSON_FILE_PATH = '../src/config.json';
-  // touch
-  fsAsync.writeFile(CONFIG_JSON_FILE_PATH, JSON.stringify(json_response.tunnels))
-  .then(function() {
-    // get stat
-    return fsAsync.stat(CONFIG_JSON_FILE_PATH);
-  })
-  .then(function(file_stat) {
-    // check
-    console.log(CONFIG_JSON_FILE_PATH, 'is a file?', file_stat.isFile());
-
-    // Start express
-    app.listen(process.env.PORT || 8080, '0.0.0.0');
-    console.log('listening on 0.0.0.0:' + process.env.PORT || 8080);
-  });
-});
 
 //CORS middleware
 var allowCrossDomain = function(req, res, next) {
@@ -70,3 +34,37 @@ function get(req, res, next) {
   next();
 }
 
+// all envs
+/**/console.log('\n>>---------\n process.env:\n',/*-debug-*/
+/**/  require('util').inspect(process.env, /*-debug-*/
+/**/  { showHidden: false, depth: null, colors: true }), '\n>>---------\n');/*-debug-*/
+
+var CONFIG_JSON_FILE_PATH = '../src/config.json';
+
+/**
+ * GET NGROK TUNNELS
+ */
+
+var all_json_tunnels = {};
+
+getTunnel(process.env['RETHINK-EXPRESS-NGROK_URL'])
+.then(function(json_tunnels) {
+  all_json_tunnels['RETHINK-EXPRESS-NGROK_URL'] = json_tunnels;
+  return getTunnel(process.env['RETHINK-DB-NGROK_URL']);
+})
+.then(function(json_tunnels) {
+  all_json_tunnels['RETHINK-DB-NGROK_URL'] = json_tunnels;
+  /**/console.log('\n>>---------\n all_json_tunnels:\n', all_json_tunnels, '\n>>---------\n');/*-debug-*/
+  /**
+   * SAVE TO CONFIG FILE
+   */
+  /**/console.log('\n>>---------\n CONFIG_JSON_FILE_PATH:\n', CONFIG_JSON_FILE_PATH, '\n>>---------\n');/*-debug-*/
+  return fsAsync.writeFile(CONFIG_JSON_FILE_PATH, JSON.stringify(all_json_tunnels, ' ', 2));
+})
+.then(function() {
+  /**
+   * START EXPRESS
+   */
+  app.listen(process.env.PORT || 8080, '0.0.0.0');
+  console.log('listening on 0.0.0.0:' + process.env.PORT || 8080);
+});

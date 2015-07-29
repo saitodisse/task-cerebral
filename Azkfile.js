@@ -171,7 +171,7 @@ systems({
   /////////////////////////////////////////////////
   'util-config-save': {
     extends: 'rethink-express',
-    depends: ['rethink-express-ngrok'],
+    depends: ['rethink-express-ngrok', 'rethink-db-ngrok'],
     workdir: '/azk/#{manifest.dir}/#{system.name}',
     command: 'npm start',
     wait: 10,

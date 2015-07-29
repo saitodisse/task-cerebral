@@ -4,6 +4,8 @@ import AddTask from './components/AddTask.js';
 import TasksList from './components/TasksList.js';
 import TasksFooter from './components/TasksFooter.js';
 
+var utils_get_rethink_db_ngrok = require('./utils/rethink-db-ngrok.js');
+
 class App extends StateComponent {
 
 	getStatePaths() {
@@ -52,13 +54,19 @@ class App extends StateComponent {
 		this.signals.loadFromServer();
 	}
 
+  componentWillMount() {
+    super.componentWillMount();
+
+    /**/console.log('\n%% HELLO \n');/*-debug-*/
+  }
+
 	render() {
 		return (
 			<div className="container">
 				<div className="buttonsTop">
 					{this.renderRecordButton()}
 					<button className="btn btn-default" onClick={this.loadFromServer.bind(this)}>Load from DB</button>
-					<a href='http://rethink-db.dev.azk.io' target='_tab'>http://rethink-db.dev.azk.io</a>
+					<a href={utils_get_rethink_db_ngrok()} target='_tab'>rethink db</a>
 				</div>
 				<section id="taskapp">
 					<header id="header">

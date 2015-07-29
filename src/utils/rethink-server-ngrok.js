@@ -4,7 +4,6 @@ var config = require('../config.js');
 module.exports = function() {
   return new Promise((resolve, reject) => {
 
-
     if (/.*ngrok\.io/.test(window.location.hostname) ) {
       /**/console.log('\n%% has ngrok \n');/*-debug-*/
 
@@ -17,7 +16,7 @@ module.exports = function() {
         }
       }
 
-      return resolve(get_http_url(config_json))
+      return resolve(get_http_url(config_json['RETHINK-EXPRESS-NGROK_URL']))
     } else {
       /**/console.log('\n%% do not have ngrok \n');/*-debug-*/
       return resolve(config.rethinkdb_server.host)

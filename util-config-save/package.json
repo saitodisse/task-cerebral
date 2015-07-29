@@ -8,6 +8,7 @@
   "author": "saitodisse",
   "license": "MIT",
   "dependencies": {
+    "bluebird": "^2.9.34",
     "body-parser": "^1.13.2",
     "express": "^4.13.1",
     "file-async": "^0.1.3",

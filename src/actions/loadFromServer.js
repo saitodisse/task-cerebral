@@ -1,11 +1,11 @@
 var request = require('superagent');
-var utils_get_rethinkdb_server = require('../utils/get-rethinkdb-server.js');
+var utils_get_rethink_server_ngrok = require('../utils/rethink-server-ngrok.js');
 
 let loadFromServer = function (args, state, promise) {
 
 	let task = state.get('tasks', args.ref);
 
-	utils_get_rethinkdb_server().then((rethinkdb_server_url) => {
+	utils_get_rethink_server_ngrok().then((rethinkdb_server_url) => {
 		request
 			.get(rethinkdb_server_url + '/task/get')
 			.set('Accept', 'application/json')
