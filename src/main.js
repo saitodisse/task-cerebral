@@ -22,7 +22,7 @@ import setVisibleTasks from './actions/setVisibleTasks.js';
 controller.signal('newTaskTitleChanged', setNewTaskTitle);
 controller.signal('newTaskSubmitted', addTask, setVisibleTasks, setCounters, [saveTask], updateTask);
 controller.signal('removeTaskClicked', removeTaskStarting, setVisibleTasks, [removeTaskFromServer], removeTask, setCounters);
-controller.signal('loadFromServer', removeAllTasks, [loadFromServer], setAllTasks, setCounters, setVisibleTasks);
+controller.signal('loadFromServer', [loadFromServer], removeAllTasks, setAllTasks, setCounters, setVisibleTasks);
 
 // Render wrapper
 const Wrapper = React.createClass({
