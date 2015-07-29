@@ -1,9 +1,23 @@
 ## task cerebral
 
-Simples list example using cerebral controller
+Simples list example using [cerebral controller](https://github.com/christianalfoni/cerebral)
 
-- serves a webpack-dev-server
-- build a production ready version on dist folder
+- [webpack/hot/dev-server](http://webpack.github.io/docs/webpack-dev-server.html#hot-mode) enabled
+- production ready version on dist folder
+- exposes everything (app, DB) with [ngrok](https://ngrok.com/)
+
+How to run with [azk](http://www.azk.io/):
+
+```
+azk restart -R
+```
+
+- [task-cerebral dev](http://task-cerebral.dev.azk.io)
+    + dev server (for devs, with webpack/hot/dev-server)
+- [task caddy](http://task-caddy.dev.azk.io)
+    + local prod
+- [task caddy + ngrok](http://task-caddy-ngrok.dev.azk.io)
+    + ngrok exposed prod (you can send the link for your friends)
 
 ----------------------
 
