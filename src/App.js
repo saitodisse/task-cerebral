@@ -56,8 +56,6 @@ class App extends StateComponent {
 
   componentWillMount() {
     super.componentWillMount();
-
-    /**/console.log('\n%% HELLO \n');/*-debug-*/
   }
 
 	render() {

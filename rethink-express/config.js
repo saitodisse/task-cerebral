@@ -7,7 +7,8 @@ module.exports = {
       db: 'tasks_cerebral'
   },
   express: {
-      port: process.env.PORT || 8080
+      port: process.env.PORT || 8080,
+      simulate_delay: process.env.SIMULATE_DELAY || 0
   },
   rethinkdb_server_ngrok: {
     api: 'http://rethink-express-ngrok.dev.azk.io/api'

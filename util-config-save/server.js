@@ -34,34 +34,34 @@ function get(req, res, next) {
   next();
 }
 
-// all envs
-/**/console.log('\n>>---------\n process.env:\n',/*-debug-*/
-/**/  require('util').inspect(process.env, /*-debug-*/
-/**/  { showHidden: false, depth: null, colors: true }), '\n>>---------\n');/*-debug-*/
+// print ENVs
+console.log('\n>>---------\n ENVs:\n',
+  require('util').inspect(process.env,
+  { showHidden: false, depth: null, colors: true }), '\n>>---------\n');
 
 var CONFIG_JSON_FILE_PATH = '../src/config.json';
 
-/**
- * GET NGROK TUNNELS
- */
-
 var all_json_tunnels = {};
-
 getTunnel(process.env['RETHINK-EXPRESS-NGROK_URL'])
 .then(function(json_tunnels) {
   all_json_tunnels['RETHINK-EXPRESS-NGROK_URL'] = json_tunnels;
   return getTunnel(process.env['RETHINK-DB-NGROK_URL']);
 })
 .then(function(json_tunnels) {
+  /**
+   * NGROK TUNNELS
+   */
   all_json_tunnels['RETHINK-DB-NGROK_URL'] = json_tunnels;
-  /**/console.log('\n>>---------\n all_json_tunnels:\n', all_json_tunnels, '\n>>---------\n');/*-debug-*/
+  console.log('\n>>---------\n all_json_tunnels:\n',
+                               all_json_tunnels, '\n>>---------\n');
+
   /**
    * SAVE TO CONFIG FILE
    */
-  /**/console.log('\n>>---------\n CONFIG_JSON_FILE_PATH:\n', CONFIG_JSON_FILE_PATH, '\n>>---------\n');/*-debug-*/
   return fsAsync.writeFile(CONFIG_JSON_FILE_PATH, JSON.stringify(all_json_tunnels, ' ', 2));
 })
 .then(function() {
+
   /**
    * START EXPRESS
    */

@@ -120,6 +120,9 @@ systems({
       '/azk/#{manifest.dir}/#{system.name}': sync('./#{system.name}'),
       '/azk/#{manifest.dir}/#{system.name}/node_modules': persistent('#{system.name}/#{system.name}/node_modules')
     },
+    envs: {
+      SIMULATE_DELAY: "2000"
+    },
     export_envs: {
       APP_URL: "#{azk.default_domain}:#{net.port.http}"
     }

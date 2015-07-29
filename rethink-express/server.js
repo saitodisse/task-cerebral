@@ -48,7 +48,11 @@ function handleError(res) {
 // Retrieve all tasks
 function get(req, res, next) {
   Task.orderBy({index: 'createdAt'}).run().then(function(result) {
-    res.send(JSON.stringify(result));
+
+    setTimeout(function() {
+      res.send(JSON.stringify(result));
+    }, config.express.simulate_delay);
+
   }).error(handleError(res));
 }
 
@@ -56,7 +60,11 @@ function get(req, res, next) {
 function create(req, res, next) {
   var task = new Task(req.body);
   task.save().then(function(result) {
-    res.send(JSON.stringify(result));
+
+    setTimeout(function() {
+      res.send(JSON.stringify(result));
+    }, config.express.simulate_delay);
+
   }).error(handleError(res));
 }
 
@@ -66,7 +74,11 @@ function update(req, res, next) {
   Task.get(task.id).update({
    title: req.body.title
   }).run().then(function(task_response) {
-   res.send(JSON.stringify(task_response));
+
+    setTimeout(function() {
+      res.send(JSON.stringify(task_response));
+    }, config.express.simulate_delay);
+
   }).error(handleError(res));
 
   // Another way to delete a task is with
@@ -77,7 +89,11 @@ function update(req, res, next) {
 function del(req, res, next) {
   Task.get(req.body.id).run().then(function(task) {
     task.delete().then(function(result) {
-      res.send(req.body.id + ' was deleted');
+
+      setTimeout(function() {
+        res.send(req.body.id + ' was deleted');
+      }, config.express.simulate_delay);
+
     }).error(handleError(res));
   }).error(handleError(res));
 
