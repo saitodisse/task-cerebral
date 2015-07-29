@@ -1,9 +1,10 @@
+//FIXME: remove hardcoded values
 module.exports = {
   rethinkdb_server: {
-    host: 'http://server-rdb.dev.azk.io',
+    host: 'http://rethink-express.dev.azk.io',
     db: 'tasks_cerebral'
   },
   rethinkdb_server_ngrok: {
-    api: 'http://ngrok-server-rdb.dev.azk.io/api'
+    api: 'http://rethink-express-ngrok.dev.azk.io/api'
   },
 };

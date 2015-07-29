@@ -47,37 +47,6 @@ systems({
       http: '8080/tcp',
       rdb_28015: '28015:28015/tcp',
       rdb_29015: '29015:29015/tcp'
-    }
-  },
-
-  /////////////////////////////////////////////////
-  /// server-rdb: thinky + express
-  /// ----------------
-  /// A light Node.js ORM for RethinkDB
-  ///
-  /// https://github.com/neumino/thinky
-  /// https://thinky.io/
-  /////////////////////////////////////////////////
-  'server-rdb': {
-    extends: 'task-cerebral',
-    depends: ['rethink-db'],
-    workdir: '/azk/#{manifest.dir}/#{system.name}',
-    command: 'npm start',
-    wait: 10,
-    ports: {
-      http: '8080/tcp'
-    },
-    mounts: {
-      // Syncs the files in './#{system.name}' with a remote destination,
-      // which is mounted in the '/azk/#{manifest.dir}/#{system.name}'.
-      // Differently from `path()` option, `sync` uses rsync instead of VirtualBox
-      // shared folders. As result, the overall performance is significantly
-      // increased, mainly for applications which demand a great number of
-      // files (e.g. a Ruby on Rails application with a lot of assets).
-      //
-      // > http://docs.azk.io/en/reference/azkfilejs/mounts.html#sync
-      '/azk/#{manifest.dir}/#{system.name}': sync('./#{system.name}'),
-      '/azk/#{manifest.dir}/#{system.name}/node_modules': persistent('#{system.name}/#{system.name}/node_modules')
     },
     export_envs: {
       APP_URL: "#{azk.default_domain}:#{net.port.http}"
@@ -85,7 +54,7 @@ systems({
   },
 
   /////////////////////////////////////////////////
-  /// ngrok: server-rdb web exposer
+  /// ngrok: rethink-db exposer
   /// -----------------------------
   /// Secure tunnels to localhost
   /// "I want to expose a local server behind a NAT
@@ -93,8 +62,8 @@ systems({
   ///
   /// https://ngrok.com/
   /////////////////////////////////////////////////
-  'ngrok-server-rdb': {
-    depends: ['server-rdb'],
+  'rethink-db-ngrok': {
+    depends: ['rethink-db'],
     // Dependent systems
     image: {docker: 'azukiapp/ngrok'},
 
@@ -123,17 +92,92 @@ systems({
   },
 
   /////////////////////////////////////////////////
-  /// server-save-config: express - json config saver
+  /// rethink-express: thinky + express
+  /// ----------------
+  /// A light Node.js ORM for RethinkDB
+  ///
+  /// https://github.com/neumino/thinky
+  /// https://thinky.io/
+  /////////////////////////////////////////////////
+  'rethink-express': {
+    extends: 'task-cerebral',
+    depends: ['rethink-db'],
+    workdir: '/azk/#{manifest.dir}/#{system.name}',
+    command: 'npm start',
+    wait: 10,
+    ports: {
+      http: '8080/tcp'
+    },
+    mounts: {
+      // Syncs the files in './#{system.name}' with a remote destination,
+      // which is mounted in the '/azk/#{manifest.dir}/#{system.name}'.
+      // Differently from `path()` option, `sync` uses rsync instead of VirtualBox
+      // shared folders. As result, the overall performance is significantly
+      // increased, mainly for applications which demand a great number of
+      // files (e.g. a Ruby on Rails application with a lot of assets).
+      //
+      // > http://docs.azk.io/en/reference/azkfilejs/mounts.html#sync
+      '/azk/#{manifest.dir}/#{system.name}': sync('./#{system.name}'),
+      '/azk/#{manifest.dir}/#{system.name}/node_modules': persistent('#{system.name}/#{system.name}/node_modules')
+    },
+    export_envs: {
+      APP_URL: "#{azk.default_domain}:#{net.port.http}"
+    }
+  },
+
+  /////////////////////////////////////////////////
+  /// ngrok: rethink-express web exposer
+  /// -----------------------------
+  /// Secure tunnels to localhost
+  /// "I want to expose a local server behind a NAT
+  /// or firewall to the internet."
+  ///
+  /// https://ngrok.com/
+  /////////////////////////////////////////////////
+  'rethink-express-ngrok': {
+    depends: ['rethink-express'],
+    // Dependent systems
+    image: {docker: 'azukiapp/ngrok'},
+
+    // Mounts folders to assigned paths
+    mounts: {
+      // Mount the folder located in the current system machine '/tmp',
+      // relative to the Azkfile.js, to the path '/ngrok/log' inside the
+      // system container. If any of the files are changed, from the user
+      // machine or from inside the container, the information is also updated
+      // on the other end.
+      '/ngrok/log': path('/tmp')
+    },
+    scalable: { default: 1 },
+
+    wait: 10,
+    http: {
+      domains: ['#{system.name}.#{azk.default_domain}']
+    },
+    ports: {
+      http: '4040/tcp'
+    },
+    envs: {
+      NGROK_CONFIG: '/ngrok/ngrok.yml',
+      NGROK_LOG: '/ngrok/log/#{system.name}_ngrok.log'
+    }
+  },
+
+  /////////////////////////////////////////////////
+  /// util-config-save: express - json config saver
   /// ----------------------
   /// saves configuration to a json file
   /// so the task-cerebral can use on browser
   /////////////////////////////////////////////////
-  'server-save-config': {
-    extends: 'server-rdb',
-    depends: ['ngrok-server-rdb'],
+  'util-config-save': {
+    extends: 'rethink-express',
+    depends: ['rethink-express-ngrok'],
     workdir: '/azk/#{manifest.dir}/#{system.name}',
     command: 'npm start',
     wait: 10,
+    http: {
+      domains: ['#{system.name}.#{azk.default_domain}']
+    },
     ports: {
       http: '8080/tcp'
     },
@@ -156,7 +200,7 @@ systems({
   /////////////////////////////////////////////////
   'task-cerebral': {
     // Dependent systems
-    depends: ['server-save-config'],
+    depends: ['util-config-save'],
     image: {'docker': 'azukiapp/node'},
     provision: [
       'npm install'
@@ -194,7 +238,7 @@ systems({
   ///
   /// https://caddyserver.com/
   /////////////////////////////////////////////////
-  'caddy': {
+  'task-caddy': {
     depends: ['task-cerebral'],
     image: {docker: 'joshix/caddy'},
     scalable: { default: 1 },
@@ -223,9 +267,9 @@ systems({
   ///
   /// https://ngrok.com/
   /////////////////////////////////////////////////
-  'ngrok-caddy': {
+  'task-caddy-ngrok': {
     // Dependent systems
-    depends: ['caddy'],
+    depends: ['task-caddy'],
     image: {docker: 'azukiapp/ngrok'},
 
     // Mounts folders to assigned paths

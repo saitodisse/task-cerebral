@@ -9,7 +9,8 @@ var app = express();
 
 // get ngrok tunnel by local API
 request
-.get('http://ngrok-server-rdb.dev.azk.io/api/tunnels')
+     //FIXME: remove hardcoded values
+.get('http://rethink-express-ngrok.dev.azk.io/api/tunnels')
 .set('Accept', 'application/json')
 .end(function(err, res){
   if(err) {

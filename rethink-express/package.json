@@ -1,5 +1,5 @@
 {
-  "name": "server-rdb",
+  "name": "rethink-express",
   "version": "0.0.1",
   "description": "rethinkdb server",
   "scripts": {

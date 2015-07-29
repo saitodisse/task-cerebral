@@ -1,5 +1,5 @@
 {
-  "name": "server-save-config",
+  "name": "util-config-save",
   "version": "0.0.1",
   "description": "server save config",
   "scripts": {
