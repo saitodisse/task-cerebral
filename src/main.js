@@ -15,13 +15,14 @@ import updateTask from './actions/updateTask.js';
 import removeAllTasks from './actions/removeAllTasks.js';
 import loadFromServer from './actions/loadFromServer.js';
 import setAllTasks from './actions/setAllTasks.js';
+import setVisibleTasks from './actions/setVisibleTasks.js';
 
 // Signals
 // controller.signal('routeChanged', function() {});
 controller.signal('newTaskTitleChanged', setNewTaskTitle);
-controller.signal('newTaskSubmitted', addTask, setCounters, [saveTask], updateTask);
-controller.signal('removeTaskClicked', removeTaskStarting, [removeTaskFromServer], removeTask, setCounters);
-controller.signal('loadFromServer', removeAllTasks, [loadFromServer], setAllTasks, setCounters);
+controller.signal('newTaskSubmitted', addTask, setVisibleTasks, setCounters, [saveTask], updateTask);
+controller.signal('removeTaskClicked', removeTaskStarting, setVisibleTasks, [removeTaskFromServer], removeTask, setCounters);
+controller.signal('loadFromServer', removeAllTasks, [loadFromServer], setAllTasks, setCounters, setVisibleTasks);
 
 // Render wrapper
 const Wrapper = React.createClass({

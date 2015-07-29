@@ -6,7 +6,7 @@ let updateTask = function(args, state) {
 
   state.merge(path, {
     id: args.id,
-    $isSaving: false
+    isSaving: false
   });
 
 };

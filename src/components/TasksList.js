@@ -5,7 +5,7 @@ import StateComponent from './../StateComponent.js';
 class TasksList extends StateComponent {
   getStatePaths() {
     return {
-      tasks: ['tasks']
+      tasks: ['visibleTasks']
     };
   }
   renderTask(task_id, index) {

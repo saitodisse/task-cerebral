@@ -121,7 +121,7 @@ systems({
       '/azk/#{manifest.dir}/#{system.name}/node_modules': persistent('#{system.name}/#{system.name}/node_modules')
     },
     envs: {
-      SIMULATE_DELAY: "2000"
+      SIMULATE_DELAY: "800"
     },
     export_envs: {
       APP_URL: "#{azk.default_domain}:#{net.port.http}"

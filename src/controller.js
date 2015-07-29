@@ -5,19 +5,19 @@ import events from './events.js';
 const initialState = Store({
   nextRef: 0,
   tasks: {},
-  // visibleTasks: function() {
-  //   return {
-  //     value: [],
-  //     deps: {
-  //       tasks: ['tasks']
-  //     },
-  //     get: function(refs, deps) {
-  //       return refs.map(function(ref) {
-  //         return deps.tasks[ref];
-  //       });
-  //     }
-  //   };
-  // },
+  visibleTasks: function() {
+    return {
+      value: [],
+      deps: {
+        tasks: ['tasks']
+      },
+      get: function(refs, deps) {
+        return refs.map(function(ref) {
+          return deps.tasks[ref];
+        });
+      }
+    };
+  },
   newTaskTitle: '',
   isSaving: false,
   isRemoving: false

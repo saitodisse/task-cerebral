@@ -6,7 +6,7 @@ let setAllTasks = function(args, state) {
     var ref = state.get('nextRef');
     let task = {
       $ref: ref,
-      $isSaving: false,
+      isSaving: false,
       title: tasks[key].title,
       id: tasks[key].id
     };
