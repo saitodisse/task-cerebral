@@ -21,7 +21,13 @@ azk restart -R
 
 ----------------------
 
-![gliffy diagram](./gliffy diagram.png)
+![gliffy diagram](./github_assets/gliffy diagram.png)
+
+see architecture details on [Azkfile.js](https://github.com/saitodisse/task-cerebral/blob/master/Azkfile.js)
+
+----------------------
+
+![azk status](./github_assets/azk_status.png)
 
 see architecture details on [Azkfile.js](https://github.com/saitodisse/task-cerebral/blob/master/Azkfile.js)
 
