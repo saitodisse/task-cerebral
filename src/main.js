@@ -5,6 +5,7 @@ import controller from './controller.js';
 
 // Actions
 import addTask from './actions/addTask.js';
+import removeTaskStarting from './actions/removeTaskStarting.js';
 import removeTask from './actions/removeTask.js';
 import removeTaskFromServer from './actions/removeTaskFromServer.js';
 import setNewTaskTitle from './actions/setNewTaskTitle.js';
@@ -19,7 +20,7 @@ import setAllTasks from './actions/setAllTasks.js';
 // controller.signal('routeChanged', function() {});
 controller.signal('newTaskTitleChanged', setNewTaskTitle);
 controller.signal('newTaskSubmitted', addTask, setCounters, [saveTask], updateTask);
-controller.signal('removeTaskClicked', [removeTaskFromServer], removeTask, setCounters);
+controller.signal('removeTaskClicked', removeTaskStarting, [removeTaskFromServer], removeTask, setCounters);
 controller.signal('loadFromServer', removeAllTasks, [loadFromServer], setAllTasks, setCounters);
 
 // Render wrapper

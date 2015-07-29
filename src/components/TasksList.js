@@ -16,7 +16,9 @@ class TasksList extends StateComponent {
     return (
       <section id="main">
         <ul className="list-group">
-          {Object.keys(this.state.tasks).map(this.renderTask.bind(this))}
+          {Object.keys(this.state.tasks)
+            .reverse()
+            .map(this.renderTask.bind(this))}
         </ul>
       </section>
     );

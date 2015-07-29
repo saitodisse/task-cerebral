@@ -7,12 +7,16 @@ class Task extends StateComponent {
       <li className='list-group-item'>
         <button
           className="btn btn-danger"
-          disabled={this.props.task.$isSaving}
+          disabled={this.props.task.$isSaving || this.props.task.$isRemoving}
           onClick={this.signals.removeTaskClicked.bind(null, {
             ref: this.props.task.$ref
           })}>del</button>
         {this.props.task.title} {this.props.task.$isSaving ?
           <small> (saving)</small> :
+          null
+        }
+        {this.props.task.$isRemoving ?
+          <small> (removing)</small> :
           null
         }
       </li>

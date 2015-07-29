@@ -19,7 +19,8 @@ const initialState = Store({
   //   };
   // },
   newTaskTitle: '',
-  isSaving: false
+  isSaving: false,
+  isRemoving: false
 });
 
 let state = initialState;

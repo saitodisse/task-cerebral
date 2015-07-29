@@ -2,6 +2,7 @@ var request = require('superagent');
 var utils_get_rethink_server_ngrok = require('../utils/rethink-server-ngrok.js');
 
 let removeTaskFromServer = function (args, state, promise) {
+	console.dir(args)
 	let task = state.get('tasks', args.ref);
 	utils_get_rethink_server_ngrok().then((rethinkdb_server_url) => {
 		request
