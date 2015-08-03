@@ -48,10 +48,6 @@ class App extends StateComponent {
     this.recorder.seek(0, true);
   }
 
-  loadFromServer() {
-    this.signals.loadFromServer();
-  }
-
   componentWillMount() {
     super.componentWillMount();
   }
@@ -61,7 +57,6 @@ class App extends StateComponent {
       <div className="container">
         <div className="buttonsTop">
           {this.renderRecordButton()}
-          <button className="btn btn-default" onClick={this.loadFromServer.bind(this)}>Load from DB</button>
           <a href={utils_get_rethink_db_ngrok()} target='_tab'>rethink db</a>
         </div>
         <section id="taskapp">

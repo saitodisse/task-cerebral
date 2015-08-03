@@ -24,7 +24,6 @@ controller.signal('routeChanged', [loadFromServer], removeAllTasks, setAllTasks,
 controller.signal('newTaskTitleChanged', setNewTaskTitle);
 controller.signal('newTaskSubmitted', addTask, setVisibleTasks, setCounters, [saveTask], updateTask);
 controller.signal('removeTaskClicked', removeTaskStarting, setVisibleTasks, [removeTaskFromServer], removeTask, setCounters);
-controller.signal('loadFromServer', [loadFromServer], removeAllTasks, setAllTasks, setCounters, setVisibleTasks);
 
 // Render wrapper
 const Wrapper = React.createClass({
