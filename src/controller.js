@@ -1,8 +1,6 @@
-import Store from 'immutable-store';
-import {Controller, Value} from 'cerebral';
-import events from './events.js';
+import Controller from './CustomController.js';
 
-const initialState = Store({
+const state = {
   nextRef: 0,
   tasks: {},
   visibleTasks: function() {
@@ -21,40 +19,6 @@ const initialState = Store({
   newTaskTitle: '',
   isSaving: false,
   isRemoving: false
-});
+};
 
-let state = initialState;
-
-export default Controller({
-  onReset: function () {
-    state = initialState;
-  },
-  onSeek: function (seek, isPlaying, currentRecording) {
-    state = state.import(currentRecording.initialState);
-    events.emit('change', state);
-  },
-  onUpdate: function () {
-    events.emit('change', state);
-  },
-  onGet: function (path) {
-    return Value(path, state);
-  },
-  onSet: function (path, value) {
-    const key = path.pop();
-    state = Value(path, state).set(key, value);
-  },
-  onUnset: function (path, key) {
-    state = Value(path, state).unset(key);
-  },
-  onPush: function (path, value) {
-    state = Value(path, state).push(value);
-  },
-  onSplice: function () {
-    let args = [].slice.call(arguments);
-    const value = Value(args.shift(), state);
-    state = value.splice.apply(value, args);
-  },
-  onMerge: function (path, value) {
-    state = Value(path, state).merge(value);
-  }
-});
+export default Controller(state);

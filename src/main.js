@@ -1,4 +1,6 @@
 import React from 'react';
+import ReactiveRouter from 'reactive-router';
+
 import App from './App.js';
 import controller from './controller.js';
 // import Page from 'page';
@@ -18,7 +20,7 @@ import setAllTasks from './actions/setAllTasks.js';
 import setVisibleTasks from './actions/setVisibleTasks.js';
 
 // Signals
-// controller.signal('routeChanged', function() {});
+controller.signal('routeChanged', [loadFromServer], removeAllTasks, setAllTasks, setCounters, setVisibleTasks);
 controller.signal('newTaskTitleChanged', setNewTaskTitle);
 controller.signal('newTaskSubmitted', addTask, setVisibleTasks, setCounters, [saveTask], updateTask);
 controller.signal('removeTaskClicked', removeTaskStarting, setVisibleTasks, [removeTaskFromServer], removeTask, setCounters);
@@ -26,23 +28,29 @@ controller.signal('loadFromServer', [loadFromServer], removeAllTasks, setAllTask
 
 // Render wrapper
 const Wrapper = React.createClass({
-	childContextTypes: {
-		controller: React.PropTypes.object
-	},
-	getChildContext() {
-		return {
-			controller: controller
-		};
-	},
-	render() {
-		return <App/>;
-	}
+  childContextTypes: {
+    controller: React.PropTypes.object
+  },
+  getChildContext() {
+    return {
+      controller: controller
+    };
+  },
+  render() {
+    return <App/>;
+  }
 });
 React.render(<Wrapper/>, document.querySelector('#app'));
 
-// Router
-// Page.base(location.pathname.substr(0, location.pathname.length - 1));
-// Page('/', null);
-// Page('/active', controller.signals.routeChanged);
-// Page('/completed', controller.signals.routeChanged);
-// Page.start();
+// ROUTER
+const router = ReactiveRouter({
+  '/': controller.signals.routeChanged
+});
+
+controller.eventEmitter.on('change', function (state) {
+  router.set(state.url);
+});
+
+controller.eventEmitter.on('remember', function (state) {
+  router.setSilent(state.url);
+});

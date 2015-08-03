@@ -27,6 +27,7 @@
   },
   "dependencies": {
     "json-loader": "^0.5.2",
+    "reactive-router": "^0.4.0",
     "rethinkdb": "^2.0.2",
     "superagent": "^1.2.0",
     "superagent-jsonp": "0.0.3"

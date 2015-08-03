@@ -1,16 +1,15 @@
 import React from 'react';
 import StateComponent from './../StateComponent.js';
+import {Decorator as Cerebral} from '../CustomController.js';
 
+@Cerebral({
+  isSaving: ['isSaving'],
+  newTaskTitle: ['newTaskTitle']
+})
 class AddTask extends StateComponent {
-  getStatePaths() {
-    return {
-      isSaving: ['isSaving'],
-      newTaskTitle: ['newTaskTitle']
-    };
-  }
   addTask(event) {
     event.preventDefault();
-    if(this.state.newTaskTitle.length === 0) {
+    if(this.props.newTaskTitle.length === 0) {
       return;
     }
 
@@ -36,8 +35,8 @@ class AddTask extends StateComponent {
                 id="new-task"
                 autoComplete="off"
                 placeholder="new task"
-                disabled={this.state.isSaving}
-                value={this.state.newTaskTitle}
+                disabled={this.props.isSaving}
+                value={this.props.newTaskTitle}
                 onChange={this.setNewTaskTitle.bind(this)}
               />
             </div>

@@ -1,14 +1,13 @@
 import React from 'react/addons';
 import StateComponent from './../StateComponent.js';
+import {Decorator as Cerebral} from '../CustomController.js';
 
+@Cerebral({
+  remainingCount: ['remainingCount']
+})
 class TasksFooter extends StateComponent {
-  getStatePaths() {
-    return {
-      remainingCount: ['remainingCount']
-    };
-  }
   renderRemainingCount() {
-    let count = this.state.remainingCount;
+    let count = this.props.remainingCount;
     if (count === 0 || count > 1) {
       return count + ' items';
     } else {
