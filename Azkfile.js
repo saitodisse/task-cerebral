@@ -4,6 +4,8 @@
  * cerebral controller app
  * - rethink-db as database
  * - ngrok exposes app and db server
+ *
+ * see Azkfile.md for more info
  */
 
 systems({
@@ -76,7 +78,7 @@ systems({
       // on the other end.
       '/ngrok/log': path('/tmp')
     },
-    scalable: { default: 1 },
+    scalable: { default: 0 },
 
     wait: 10,
     http: {
@@ -151,7 +153,7 @@ systems({
       // on the other end.
       '/ngrok/log': path('/tmp')
     },
-    scalable: { default: 1 },
+    scalable: { default: 0 },
 
     wait: 10,
     http: {
@@ -178,6 +180,7 @@ systems({
     workdir: '/azk/#{manifest.dir}/#{system.name}',
     command: 'npm start',
     wait: 10,
+    scalable: { default: 0 },
     http: {
       domains: ['#{system.name}.#{azk.default_domain}']
     },
@@ -203,7 +206,7 @@ systems({
   /////////////////////////////////////////////////
   'task-cerebral': {
     // Dependent systems
-    depends: ['util-config-save'],
+    depends: [],
     image: {'docker': 'azukiapp/node'},
     provision: [
       'npm install'
@@ -244,10 +247,13 @@ systems({
   'task-caddy': {
     depends: ['task-cerebral'],
     image: {docker: 'joshix/caddy'},
-    scalable: { default: 1 },
+    scalable: { default: 0 },
     wait: 10,
     http: {
-      domains: ['#{system.name}.#{azk.default_domain}']
+      domains: [
+        '#{system.name}.#{azk.default_domain}', // default azk
+        '#{process.env.AZK_HOST_IP}'            // used if deployed
+      ]
     },
     mounts: {
       // equivalent persistent_folders
@@ -280,7 +286,7 @@ systems({
       // equivalent persistent_folders
       '/ngrok/log': path('/tmp')
     },
-    scalable: { default: 1 },
+    scalable: { default: 0 },
 
     wait: 10,
     http: {
@@ -295,58 +301,50 @@ systems({
     }
   },
 
-});
+  //////////
+  /// deploy systems
+  //////////
+  deploy: {
+    image: {"docker": "azukiapp/deploy-digitalocean"},
+    mounts: {
 
-/**
- *
- *  ---------------------------------
- *  More about azk
- *  ---------------------------------
- *  + Site
- *      http://azk.io
- *
- *  + Github
- *      https://github.com/azukiapp/azk
- *
- *  + Documentation
- *      http://docs.azk.io
- *
- *  + Images directory created by the azk team
- *      http://images.azk.io
- *
- *
- *  ---------------------------------
- *  Contribute to azk
- *  ---------------------------------
- *  + Star azk on Github
- *      https://github.com/azukiapp/azk
- *
- *  + Report an issue
- *      https://github.com/azukiapp/azk/issues/new
- *
- *  + Help solving a reported issue
- *      https://github.com/azukiapp/azk/issues
- *
- *  + Check out our awesome sponsors
- *      http://azk.io/#sponsors
- *
- *
- *  ---------------------------------
- *  Stay in touch with the azk team
- *  ---------------------------------
- *  + Sign up the weekly digest
- *      http://www.azk.io/#newsletter
- *
- *  + Follow the blog
- *      https://medium.com/azuki-news
- *
- *  + Talk to our support (chat)
- *      https://gitter.im/azukiapp/azk (English) ehttps://gitter.im/azukiapp/azk/pt (Português)
- *
- *  + Facebook
- *      https://www.facebook.com/azukiapp
- *
- *  + Twitter
- *      http://twitter.com/azukiapp
- *
- */
+      // your files on remote machine
+      // will be on /home/git folder
+      "/azk/deploy/src":  path("."),
+
+      // will use your public key on server
+      // that way you can connect with:
+      // $ ssh git@REMOTE.IP
+      // $ bash
+      "/azk/deploy/.ssh": path("#{process.env.HOME}/.ssh")
+    },
+
+    // this is not a server
+    // just call with azk shell deploy
+    scalable: {"default": 0, "limit": 0},
+
+    envs: {
+
+      // need this big because we have to build nokogiri
+      BOX_SIZE: '2gb',
+
+      GIT_CHECKOUT_COMMIT_BRANCH_TAG: 'azkfile',
+      AZK_RESTART_COMMAND: 'azk restart huginn-worker -Rvv && azk restart huginn -Rvv',
+      RUN_SETUP: 'true',
+      RUN_CONFIGURE: 'true',
+      RUN_DEPLOY: 'true',
+    }
+  },
+  "fast-deploy": {
+    extends: 'deploy',
+    envs: {
+      BOX_SIZE: '2gb',
+      GIT_CHECKOUT_COMMIT_BRANCH_TAG: 'azkfile',
+      AZK_RESTART_COMMAND: 'azk restart huginn-worker -Rvv && azk restart huginn -Rvv',
+      RUN_SETUP: 'false',
+      RUN_CONFIGURE: 'false',
+      RUN_DEPLOY: 'true',
+    }
+  },
+
+});
