@@ -5,7 +5,7 @@
   "scripts": {
     "start": "webpack-dev-server --progress --colors --host 0.0.0.0 --content-base src --config webpack.config.js",
     "deploy": "webpack --config webpack.production.config.js",
-    "predeploy": "rm -rf dist/** && cp src/index.html dist && cp src/styles.css dist"
+    "predeploy": "([ -e dist ] && rm -Rf dist); mkdir -p ./dist; cp src/index.html dist && cp src/styles.css dist"
   },
   "author": "saitodisse",
   "license": "MIT",

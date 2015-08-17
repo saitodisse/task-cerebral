@@ -206,7 +206,7 @@ systems({
   /////////////////////////////////////////////////
   'task-cerebral': {
     // Dependent systems
-    depends: [],
+    depends: ['rethink-express'],
     image: {'docker': 'azukiapp/node'},
     provision: [
       'npm install'
