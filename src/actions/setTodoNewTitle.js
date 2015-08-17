@@ -1,6 +1,6 @@
-let setTaskNewTitle = function (args, state) {
-	state.merge(['tasks', args.ref], {
-		$newTitle: args.title
+let setTaskNewTitle = function (input, state) {
+	state.merge(['tasks', input.ref], {
+		$newTitle: input.title
 	});
 };
 

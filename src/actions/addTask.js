@@ -1,4 +1,4 @@
-let addTask = function(args, state) {
+let addTask = function(input, state, output) {
 
   var ref = state.get('nextRef');
   let task = {
@@ -11,9 +11,9 @@ let addTask = function(args, state) {
   state.set('newTaskTitle', '');
   state.set('nextRef', ref + 1);
 
-  return {
+  output({
     ref: ref
-  };
+  });
 };
 
 export default addTask;

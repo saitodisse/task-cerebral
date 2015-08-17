@@ -1,4 +1,4 @@
-let setVisibleTasks = function(args, state) {
+let setVisibleTasks = function(input, state) {
 
   let tasks = state.get('tasks');
   let filter = state.get('filter');

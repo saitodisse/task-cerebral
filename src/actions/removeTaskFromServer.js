@@ -1,9 +1,9 @@
 var request = require('superagent');
 var utils_get_rethink_server_ngrok = require('../utils/rethink-server-ngrok.js');
 
-let removeTaskFromServer = function (args, state, promise) {
+let removeTaskFromServer = function (input, state, output) {
 
-	let task = state.get('tasks', args.ref);
+	let task = state.get('tasks', input.ref);
 
 	request
 		.post(utils_get_rethink_server_ngrok() + '/task/delete')
@@ -13,10 +13,11 @@ let removeTaskFromServer = function (args, state, promise) {
 		.set('Accept', 'application/json')
 		.end(function(err, res){
 			if(err) {
-				console.error(res.text);
-				promise.reject(err);
+				throw err;
 			}
-			promise.resolve(res.text);
+			output.success({
+				server_response: res.text
+			});
 		});
 
 };

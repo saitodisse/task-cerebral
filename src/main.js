@@ -20,10 +20,38 @@ import setAllTasks from './actions/setAllTasks.js';
 import setVisibleTasks from './actions/setVisibleTasks.js';
 
 // Signals
-controller.signal('routeChanged', [loadFromServer], removeAllTasks, setAllTasks, setCounters, setVisibleTasks);
+controller.signal('routeChanged',
+  removeAllTasks,
+  [
+    loadFromServer, {
+      success: [setAllTasks]
+    }
+  ],
+  setCounters,
+  setVisibleTasks);
+
 controller.signal('newTaskTitleChanged', setNewTaskTitle);
-controller.signal('newTaskSubmitted', addTask, setVisibleTasks, setCounters, [saveTask], updateTask);
-controller.signal('removeTaskClicked', removeTaskStarting, setVisibleTasks, [removeTaskFromServer], removeTask, setCounters);
+
+controller.signal('newTaskSubmitted',
+  addTask,
+  setVisibleTasks,
+  setCounters,
+  [
+    saveTask, {
+      success: [updateTask]
+    }
+  ]);
+
+controller.signal('removeTaskClicked',
+  removeTaskStarting,
+  setVisibleTasks,
+  [
+    removeTaskFromServer, {
+      success: [removeTask]
+    }
+  ],
+  setCounters,
+  setVisibleTasks);
 
 // Render wrapper
 const Wrapper = React.createClass({

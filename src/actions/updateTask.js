@@ -1,11 +1,9 @@
-let updateTask = function(args, state) {
+let updateTask = function(input, state) {
 
-  var path = ['tasks', args.ref];
-
-  let task = state.get(path);
+  var path = ['tasks', input.ref];
 
   state.merge(path, {
-    id: args.id,
+    id: input.id,
     isSaving: false
   });
 

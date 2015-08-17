@@ -1,9 +1,9 @@
 var request = require('superagent');
 var utils_get_rethink_server_ngrok = require('../utils/rethink-server-ngrok.js');
 
-let loadFromServer = function (args, state, promise) {
+let loadFromServer = function (input, state, output) {
 
-	let task = state.get('tasks', args.ref);
+	let task = state.get('tasks', input.ref);
 
 	request
 		.get(utils_get_rethink_server_ngrok() + '/task/get')
@@ -13,9 +13,11 @@ let loadFromServer = function (args, state, promise) {
 				throw err;
 			}
 			var json_response = JSON.parse(res.text);
-			promise.resolve({
-				tasks: json_response
-			});
+
+			output.success({
+	      tasks: json_response
+	    });
+
 		});
 
 };

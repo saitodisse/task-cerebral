@@ -1,6 +1,6 @@
-let setAllTasks = function(args, state) {
+let setAllTasks = function(input, state) {
 
-  var tasks = args.tasks;
+  var tasks = input.tasks;
   var keys = Object.keys(tasks);
   var all_tasks = keys.map((key) => {
     var ref = state.get('nextRef');

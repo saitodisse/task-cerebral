@@ -1,4 +1,4 @@
-let removeAllTasks = function(args, state) {
+let removeAllTasks = function(input, state) {
 	state.set('tasks', {});
   state.set('nextRef', 0);
 };
