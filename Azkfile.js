@@ -51,7 +51,7 @@ systems({
       rdb_29015: '29015:29015/tcp'
     },
     export_envs: {
-      APP_URL: "#{azk.default_domain}:#{net.port.http}"
+      APP_URL: '#{azk.default_domain}:#{net.port.http}'
     }
   },
 
@@ -59,8 +59,8 @@ systems({
   /// ngrok: rethink-db exposer
   /// -----------------------------
   /// Secure tunnels to localhost
-  /// "I want to expose a local server behind a NAT
-  /// or firewall to the internet."
+  /// 'I want to expose a local server behind a NAT
+  /// or firewall to the internet.'
   ///
   /// https://ngrok.com/
   /////////////////////////////////////////////////
@@ -123,10 +123,10 @@ systems({
       '/azk/#{manifest.dir}/#{system.name}/node_modules': persistent('#{system.name}/#{system.name}/node_modules')
     },
     envs: {
-      SIMULATE_DELAY: "800"
+      SIMULATE_DELAY: '800'
     },
     export_envs: {
-      APP_URL: "#{azk.default_domain}:#{net.port.http}"
+      APP_URL: '#{azk.default_domain}:#{net.port.http}'
     }
   },
 
@@ -134,8 +134,8 @@ systems({
   /// ngrok: rethink-express web exposer
   /// -----------------------------
   /// Secure tunnels to localhost
-  /// "I want to expose a local server behind a NAT
-  /// or firewall to the internet."
+  /// 'I want to expose a local server behind a NAT
+  /// or firewall to the internet.'
   ///
   /// https://ngrok.com/
   /////////////////////////////////////////////////
@@ -263,7 +263,7 @@ systems({
       http: '2015/tcp'
     },
     export_envs: {
-      APP_URL: "#{azk.default_domain}:#{net.port.http}"
+      APP_URL: '#{azk.default_domain}:#{net.port.http}'
     }
   },
 
@@ -271,8 +271,8 @@ systems({
   /// ngrok: caddy web exposer
   /// -----------------------------
   /// Secure tunnels to localhost
-  /// "I want to expose a local server behind a NAT
-  /// or firewall to the internet."
+  /// 'I want to expose a local server behind a NAT
+  /// or firewall to the internet.'
   ///
   /// https://ngrok.com/
   /////////////////////////////////////////////////
@@ -305,23 +305,23 @@ systems({
   /// deploy systems
   //////////
   deploy: {
-    image: {"docker": "azukiapp/deploy-digitalocean"},
+    image: {'docker': 'azukiapp/deploy-digitalocean'},
     mounts: {
 
       // your files on remote machine
       // will be on /home/git folder
-      "/azk/deploy/src":  path("."),
+      '/azk/deploy/src':  path('.'),
 
       // will use your public key on server
       // that way you can connect with:
       // $ ssh git@REMOTE.IP
       // $ bash
-      "/azk/deploy/.ssh": path("#{process.env.HOME}/.ssh")
+      '/azk/deploy/.ssh': path('#{process.env.HOME}/.ssh')
     },
 
     // this is not a server
     // just call with azk shell deploy
-    scalable: {"default": 0, "limit": 0},
+    scalable: {'default': 0, 'limit': 0},
 
     envs: {
 
@@ -335,7 +335,7 @@ systems({
       RUN_DEPLOY: 'true',
     }
   },
-  "fast-deploy": {
+  'fast-deploy': {
     extends: 'deploy',
     envs: {
       BOX_SIZE: '2gb',

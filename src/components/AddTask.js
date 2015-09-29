@@ -1,23 +1,22 @@
 import React from 'react';
-import StateComponent from './../StateComponent.js';
-import {Decorator as Cerebral} from '../CustomController.js';
+import {Decorator as Cerebral} from 'cerebral-react';
 
 @Cerebral({
   isSaving: ['isSaving'],
   newTaskTitle: ['newTaskTitle']
 })
-class AddTask extends StateComponent {
+class AddTask extends React.Component {
   addTask(event) {
     event.preventDefault();
     if(this.props.newTaskTitle.length === 0) {
       return;
     }
 
-    this.signals.newTaskSubmitted();
+    this.props.signals.newTaskSubmitted();
   }
 
   setNewTaskTitle(event) {
-    this.signals.newTaskTitleChanged({
+    this.props.signals.newTaskTitleChanged({
       title: event.target.value
     });
   }

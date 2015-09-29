@@ -16,7 +16,7 @@ if (WEBPACK_HOST === '0.0.0.0') {
 var config = {
 	entry: {
     // split vendor to another file
-    vendors: ['react', 'cerebral', 'immutable-store', 'event-emitter'],
+    vendors: ['react', 'cerebral', 'event-emitter'],
 		app: [
 			path.resolve(__dirname, 'src/main.js'),
 			'webpack/hot/dev-server',

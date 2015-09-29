@@ -1,9 +1,10 @@
 import React from 'react';
-import ReactiveRouter from 'reactive-router';
+// import ReactiveRouter from 'reactive-router';
 
 import App from './App.js';
 import controller from './controller.js';
-// import Page from 'page';
+import {Container} from 'cerebral-react';
+import CerebralRouter from 'cerebral-router';
 
 // Actions
 import addTask from './actions/addTask.js';
@@ -28,7 +29,8 @@ controller.signal('routeChanged',
     }
   ],
   setCounters,
-  setVisibleTasks);
+  setVisibleTasks
+);
 
 controller.signal('newTaskTitleChanged', setNewTaskTitle);
 
@@ -40,7 +42,8 @@ controller.signal('newTaskSubmitted',
     saveTask, {
       success: [updateTask]
     }
-  ]);
+  ]
+);
 
 controller.signal('removeTaskClicked',
   removeTaskStarting,
@@ -51,33 +54,15 @@ controller.signal('removeTaskClicked',
     }
   ],
   setCounters,
-  setVisibleTasks);
-
-// Render wrapper
-const Wrapper = React.createClass({
-  childContextTypes: {
-    controller: React.PropTypes.object
-  },
-  getChildContext() {
-    return {
-      controller: controller
-    };
-  },
-  render() {
-    return <App/>;
-  }
-});
-React.render(<Wrapper/>, document.querySelector('#app'));
+  setVisibleTasks
+);
 
 // ROUTER
-const router = ReactiveRouter({
-  '/': controller.signals.routeChanged
-});
+CerebralRouter(controller, {
+  '/': 'routeChanged'
+}, {
+  baseUrl: ''
+}).trigger();
 
-controller.eventEmitter.on('change', function (state) {
-  router.set(state.url);
-});
+React.render(<Container controller={controller} app={App}/>, document.querySelector('#app'));
 
-controller.eventEmitter.on('remember', function (state) {
-  router.setSilent(state.url);
-});

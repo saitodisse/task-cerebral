@@ -1,11 +1,10 @@
 import React from 'react/addons';
-import StateComponent from './../StateComponent.js';
-import {Decorator as Cerebral} from '../CustomController.js';
+import {Decorator as Cerebral} from 'cerebral-react';
 
 @Cerebral({
   remainingCount: ['remainingCount']
 })
-class TasksFooter extends StateComponent {
+class TasksFooter extends React.Component {
   renderRemainingCount() {
     let count = this.props.remainingCount;
     if (count === 0 || count > 1) {
